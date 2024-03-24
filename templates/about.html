@@ -1,0 +1,92 @@
+{% extends 'layout/layout.html' %} {% block title %} About page {% endblock %}
+{% block body %}
+<main>
+  <div class="content about">
+    <h2>About Curious Caterpillar (replace with your blog name)</h2>
+    <p>
+      The internet is a vast sea of information, and sometimes it can feel
+      overwhelming to navigate. That's where Curious Caterpillar (replace with
+      your blog name) comes in! We're a passionate group of individuals
+      dedicated to bringing you insightful and engaging content about [insert
+      your blog's niche here].
+    </p>
+    <h3>Why Curious Caterpillar (replace with your blog name)?</h3>
+    <p>
+      We believe that knowledge is power, and we're here to empower you to
+      achieve your goals. Whether you're looking to [mention a specific benefit
+      your blog offers] or simply want to learn more about [your niche], we've
+      got you covered. We pride ourselves on presenting information in a clear,
+      concise, and engaging way, making complex topics accessible to everyone.
+    </p>
+    <h3>Our Story</h3>
+    <p>
+      Curious Caterpillar (replace with your blog name) was born from a shared
+      frustration with the lack of reliable and engaging content in the [your
+      niche] space. We saw a need for a platform that offered something more
+      than just dry facts and figures. We wanted to create a community where
+      people could learn, share ideas, and grow together.
+    </p>
+    <h3>What to Expect</h3>
+    <ul>
+      <li>In-depth articles</li>
+      <li>How-to guides</li>
+      <li>Interviews with industry experts</li>
+      <li>Reviews of the latest products and services</li>
+      <li>Personal stories and anecdotes</li>
+    </ul>
+    <p>
+      We aim to publish new content several times a week, so be sure to check
+      back often!
+    </p>
+    <h3>Join the Conversation</h3>
+    <p>
+      We encourage our readers to participate in the conversation! Leave
+      comments on our posts, share them with your friends, and connect with us
+      on social media. We'd love to hear from you!
+    </p>
+
+    <h4>Follow Us</h4>
+    <ul class="social-links">
+      <li><a href="#">Facebook</a></li>
+      <li><a href="#">Twitter</a></li>
+      <li><a href="#">Instagram</a></li>
+    </ul>
+
+    <h3>Ready to Get Started?</h3>
+    <p>Explore some of our most popular posts:</p>
+    <ul class="popular-posts">
+      <li><a href="#">[Title of Popular Post 1]</a></li>
+      <li><a href="#">[Title of Popular Post 2]</a></li>
+      <li><a href="#">[Title of Popular Post 3]</a></li>
+    </ul>
+
+    <h3>Subscribe for More!</h3>
+    <p>
+      Sign up for our email list to receive updates on new posts, exclusive
+      content, and special offers. We promise not to spam you!
+    </p>
+    <form class="about-form" action="" method="post">
+      <div class="field">
+        <label class="label">Email</label>
+        <div class="control has-icons-left has-icons-right">
+          <input
+            class="input"
+            type="email"
+            placeholder="Email input"
+            value="hello@"
+          />
+          <span class="icon is-small is-left">
+            <i class="fas fa-envelope"></i>
+          </span>
+        </div>
+        {#
+        <p class="help is-danger">This email is invalid</p>
+        #}
+      </div>
+      <div class="form-button">
+        <button type="submit" class="button is-primary">Subscribe</button>
+      </div>
+    </form>
+  </div>
+</main>
+{% endblock %}

@@ -1,0 +1,10 @@
+.blogs-section {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.blogs-heading {
+  margin-top: 20px;
+  color: black;
+  text-align: center;
+}

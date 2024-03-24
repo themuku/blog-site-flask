@@ -1,0 +1,109 @@
+{% extends 'layout/layout.html' %} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/home.css') }}"
+/>
+{% endblock %} {% block title %} Home page {% endblock %} {% block body %}
+<section class="hero is-fullheight">
+  <div class="hero-body">
+    <div class="container has-text-centered">
+      <h1 class="title is-1">
+        Curious Caterpillar (Replace with your blog name)
+      </h1>
+      <h2 class="subtitle">
+        Your Daily Dose of [Insert Your Niche Here] Inspiration
+      </h2>
+      <p class="buttons">
+        <a href="#about" class="button is-primary">Learn More</a>
+        <a href="#latest-posts" class="button is-light">Start Reading</a>
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="container">
+    <h2 class="title">About Us</h2>
+    <p>
+      The internet is a vast sea of information, and sometimes it can feel
+      overwhelming to navigate. That's where Curious Caterpillar (replace with
+      your blog name) comes in! We're a passionate group of individuals
+      dedicated to bringing you insightful and engaging content about [Insert
+      Your Niche Here].
+    </p>
+    <p>
+      We believe that knowledge is power, and we're here to empower you to
+      achieve your goals. Whether you're looking to [mention a specific benefit
+      your blog offers] or simply want to learn more about [your niche], we've
+      got you covered. We pride ourselves on presenting information in a clear,
+      concise, and engaging way, making complex topics accessible to everyone.
+    </p>
+    <a href="/about" class="button is-link">Read the Full Story</a>
+  </div>
+</section>
+
+<section class="section" id="latest-posts">
+  <div class="container">
+    <h2 class="title">Latest Posts</h2>
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-16by9">
+              <img src="[Image URL for Post 1]" alt="Placeholder image" />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <a href="[Link to Post 1]" class="title is-4">
+                [Title of Post 1]
+              </a>
+              <p>[Short excerpt from Post 1]</p>
+              <a href="[Link to Post 1]" class="button is-small">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-16by9">
+              <img src="[Image URL for Post 2]" alt="Placeholder image" />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <a href="[Link to Post 2]" class="title is-4">
+                [Title of Post 2]
+              </a>
+              <p>[Short excerpt from Post 2]</p>
+              <a href="[Link to Post 2]" class="button is-small">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-16by9">
+              <img src="[Image URL for Post 3]" alt="Placeholder image" />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <a href="[Link to Post 3]" class="title is-4">
+                [Title of Post 3]
+              </a>
+              <p>[Short excerpt from Post 3]</p>
+              <a href="[Link to Post 3]" class="button is-small">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="latest-blogs">
+      <a href="/blogs" class="button is-centered">View All Posts</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

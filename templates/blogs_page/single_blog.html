@@ -1,0 +1,83 @@
+{% extends 'layout/layout.html' %} {% block title %} {{ blog.title }}{% endblock
+%} {% block body %}
+<header class="section">
+  <div class="container">
+    <h1 class="title">{{ blog.title }}</h1>
+    <h2 class="subtitle">{{ blog.subtitle }}</h2>
+    <p class="subtitle">
+      By {{ blog.author_name }} | Posted on {{ blog.created_at }}
+    </p>
+  </div>
+</header>
+
+<section class="section">
+  <div class="container content">
+    <p>{{ blog.text }}</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <h2 class="title">Related Posts</h2>
+    <div class="columns">
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-16by9">
+              <img
+                src="[Image URL for Related Post 1]"
+                alt="Placeholder image"
+              />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <a href="[Link to Related Post 1]" class="title is-5">
+                [Title of Related Post 1]
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-16by9">
+              <img
+                src="[Image URL for Related Post 2]"
+                alt="Placeholder image"
+              />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <a href="[Link to Related Post 2]" class="title is-5">
+                [Title of Related Post 2]
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="card">
+          <div class="card-image">
+            <figure class="image is-16by9">
+              <img
+                src="[Image URL for Related Post 3]"
+                alt="Placeholder image"
+              />
+            </figure>
+          </div>
+          <div class="card-content">
+            <div class="content">
+              <a href="[Link to Related Post 3]" class="title is-5">
+                [Title of Related Post 3]
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

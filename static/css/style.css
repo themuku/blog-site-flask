@@ -1,0 +1,99 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css";
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma-rtl.min.css";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #fff;
+  /*height: 100vh;*/
+  color: #393d3f;
+}
+
+.header {
+  display: flex;
+  background-color: #62929e;
+  padding: 20px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-navigation ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.header-navigation__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.header-navigation__link:hover {
+}
+
+.about {
+  padding: 20px;
+  max-width: 1200px;
+  margin-inline: auto;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    text-align: center;
+    color: inherit;
+    margin-block: 20px;
+  }
+}
+
+.about-form {
+  color: inherit;
+
+  .form-button {
+    width: fit-content;
+    margin-inline: auto;
+  }
+
+  button {
+    background-color: #62929e;
+  }
+
+  button:hover {
+    background-color: #72acbb;
+  }
+
+  input {
+    background-color: transparent;
+    color: inherit;
+  }
+
+  input::placeholder {
+    color: inherit;
+  }
+
+  label {
+    color: inherit;
+  }
+}
+
+footer {
+  background-color: #62929e;
+  height: 20vh;
+}
+
+.error-message {
+  text-align: center;
+  margin-top: 60px;
+}
+
+.section {
+  background-color: #000;
+}

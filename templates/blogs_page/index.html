@@ -1,0 +1,35 @@
+{% extends 'layout/layout.html' %} {% block css %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/blog-page.css') }}"
+/>
+
+{% endblock css %} {% block title %} Blogs {% endblock title %} {% block body %}
+<h1 class="title is-1 block blogs-heading">All blog posts</h1>
+
+<section class="blogs-section">
+  {% if blogs|length > 0 %} {% for blog in blogs%}
+  <div class="column is-one-third">
+    <div class="card">
+      <div class="card-image">
+        <figure class="image is-16by9">
+          <img src="[Image URL for Post 3]" alt="Placeholder image" />
+        </figure>
+      </div>
+      <div class="card-content">
+        <div class="content">
+          <a href="[Link to Post 3]" class="title is-4"> {{ blog.title }} </a>
+          <p>[Short excerpt from Post 3]</p>
+          <a href="/blogs/{{ blog.id }}" class="button is-small">Read More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %} {% else %}
+  <h1 class="title">
+    No blogs were found!
+    <a class="link" href="/create-post">You can create you own</a>
+  </h1>
+  {% endif %}
+</section>
+{% endblock body %}

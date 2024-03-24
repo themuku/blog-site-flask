@@ -1,0 +1,70 @@
+{% extends "layout/layout.html" %} {% block css %}
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@latest/css/bulma.min.css"
+/>
+{% endblock %} {% block title %} Create New Post | Curious Caterpillar {%
+endblock %} {% block body %}
+
+<section class="section">
+  <div class="container">
+    <h1 class="title">Create New Post</h1>
+    <form action="/create-post" method="POST">
+      <div class="field">
+        <label class="label" for="title">Title</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter a catchy title"
+            required
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="subtitle">Subtitle</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            id="subtitle"
+            name="subtitle"
+            placeholder="Provide a short summary"
+            required
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="author">Author</label>
+        <div class="control">
+          <input
+            class="input"
+            type="text"
+            id="author"
+            name="author-name"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+      </div>
+      <div class="field">
+        <label class="label" for="content">Content</label>
+        <div class="control">
+          <textarea
+            class="textarea"
+            id="content"
+            name="text"
+            rows="10"
+            placeholder="Write your blog post content here"
+            required
+          ></textarea>
+        </div>
+      </div>
+      <button type="submit" class="button is-primary">Create Post</button>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
