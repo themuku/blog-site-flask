@@ -15,7 +15,7 @@
         <h1 class="title is-1">Curious Caterpillar</h1>
         <h2 class="subtitle">Create Your Account</h2>
         <div class="box">
-          <form action="/signup" method="POST">
+          <form action="/auth/sign-up" method="POST">
             <div class="field">
               <label class="label" for="username">Username</label>
               <div class="control">
@@ -51,21 +51,6 @@
                   id="password"
                   name="password"
                   placeholder="Enter password"
-                  required
-                />
-              </div>
-            </div>
-            <div class="field">
-              <label class="label" for="confirm-password"
-                >Confirm Password</label
-              >
-              <div class="control">
-                <input
-                  class="input"
-                  type="password"
-                  id="confirm-password"
-                  name="confirm-password"
-                  placeholder="Confirm password"
                   required
                 />
               </div>

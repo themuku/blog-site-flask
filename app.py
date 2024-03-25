@@ -1,25 +1,9 @@
-from flask import Flask, render_template, url_for, request, redirect, jsonify
-from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
-from sqlalchemy import Column, String, Integer, Text, DateTime, delete
+from flask import Flask, request, make_response, redirect, session, jsonify, render_template
+import bcrypt
 
+from config import db, app
 
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///blog.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-db = SQLAlchemy(app)
-
-
-class Blog(db.Model):
-    id = Column(Integer, primary_key=True)
-    title = Column(String(255), nullable=False)
-    author_name = Column(String(100), nullable=False)
-    subtitle = Column(String(255), nullable=False)
-    text = Column(Text, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
-    def __repr__(self):
-        return "<Article %r>" % self.id
+from models import Blog, User
 
 
 @app.route('/')
@@ -63,7 +47,38 @@ def auth_page(auth):
         elif auth == "sign-up":
             return render_template("auth_page/sign-up.html")
     elif request.method == "POST":
-        pass
+        if auth == "sign-up":
+            name = request.form["username"]
+            password = request.form["password"]
+            email = request.form["email"]
+
+            hashed_pass = bcrypt.hashpw(password.encode("utf-8"), salt=bcrypt.gensalt())
+
+            new_user = User(name=name, password_hash=hashed_pass.decode("utf-8"), email=email)
+            db.session.add(new_user)
+
+            if new_user:
+                try:
+                    db.session.commit()
+                    session["user_id"] = new_user.id
+                    return redirect("/auth/login")
+                except Exception as e:
+                    print(e)
+                    redirect("/not-found")
+            else:
+                return redirect("/not-found")
+
+        elif auth == "login":
+            email = request.form["email"]
+            password = request.form["password"]
+
+            found_user = User.query.filter(User.email.like(f"%{email}%")).first()
+
+            if found_user and bcrypt.checkpw(password.encode("utf-8"), found_user.password_hash.encode("utf-8")):
+                session["user_id"] = found_user.id
+                return redirect("/")
+            else:
+                return {'errors': ['Invalid username or password. Please try again.']}, 401
 
 
 @app.route("/create-post", methods=["POST", "GET"])
@@ -74,7 +89,7 @@ def create_post():
         author_name = request.form["author-name"]
         text = request.form["text"]
 
-        new_blog = Blog(title=title, subtitle=subtitle, author_name=author_name, text=text)
+        new_blog = Blog(title=title, subtitle=subtitle, author_name=author_name, text=text, user_id=session["user_id"])
 
         db.session.add(new_blog)
 
