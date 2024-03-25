@@ -4,8 +4,6 @@ I'd be glad to create a beautiful README file for your Flask blog project with a
 
 **Welcome to Curious Caterpillar Blog (Flask with Authorization)!**
 
-[Imagen of a bright green caterpillar with a friendly smile, wearing a tiny journalist's hat and holding a notepad and a pencil]
-
 This Flask application empowers you to build a captivating blog website where users can create and share their thoughts with the world. The project prioritizes user authentication, ensuring a secure and well-structured environment.
 
 **Key Features:**
