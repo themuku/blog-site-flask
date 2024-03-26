@@ -45,6 +45,7 @@
               >Blogs</a
             >
           </li>
+          {% if "user_id" in session %}
           <li>
             <a
               class="button is-light is-link header-navigation__link"
@@ -52,12 +53,17 @@
               >Create new Post</a
             >
           </li>
+          {% endif %}
         </ul>
       </nav>
+      {% if "user_id" not in session %}
       <div class="buttons">
         <a class="button is-light is-medium" href="/auth/login">Login</a>
         <a class="button is-light is-medium" href="/auth/sign-up">Sign up</a>
       </div>
+      {% else %}
+      <a class="button is-light is-medium" href="/auth/logout">Log out</a>
+      {% endif %}
     </header>
     {% block body %}{% endblock %}
     <footer>
