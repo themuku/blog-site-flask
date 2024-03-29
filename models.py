@@ -1,6 +1,11 @@
 from config import db
 from datetime import datetime
-from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey
+from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey, Enum
+
+
+class EnumRole:
+    ADMIN = "admin"
+    USER = "user"
 
 
 class User(db.Model):
@@ -12,6 +17,8 @@ class User(db.Model):
     password_hash = Column(String(255), nullable=False)
     blogs = db.relationship("Blog", backref="author")
     created_at = Column(DateTime, default=datetime.utcnow)
+    role = Column(Enum(EnumRole.ADMIN, EnumRole.USER), default=EnumRole.USER)
+    profile_img = Column(String(255), default="default.jpg")
 
     def __repr__(self):
         return "<User %r>" % self.id
@@ -27,6 +34,7 @@ class Blog(db.Model):
     subtitle = Column(String(255), nullable=False)
     text = Column(Text, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    blog_img = Column(String(255), default="default.jpg")
 
     def __repr__(self):
         return "<BlogPost %r>" % self.id

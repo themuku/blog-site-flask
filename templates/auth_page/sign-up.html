@@ -15,7 +15,24 @@
         <h1 class="title is-1">Curious Caterpillar</h1>
         <h2 class="subtitle">Create Your Account</h2>
         <div class="box">
-          <form action="/auth/sign-up" method="POST">
+          <form
+            action="/auth/sign-up"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+            <div class="field">
+              <label class="label" for="profile-img">Profile image</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="file"
+                  id="profile-img"
+                  name="profile_img"
+                  placeholder="Add profile image"
+                  required
+                />
+              </div>
+            </div>
             <div class="field">
               <label class="label" for="username">Username</label>
               <div class="control">

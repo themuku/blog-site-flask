@@ -1,8 +1,9 @@
-from flask import request, redirect, session, render_template, url_for
+from flask import request, redirect, session, render_template, url_for, flash
 import bcrypt
 from config import db, app
 from models import Blog, User
 from werkzeug.exceptions import NotFound, Unauthorized, BadRequest, Conflict, InternalServerError
+import cloudinary.uploader
 
 
 @app.route('/')
@@ -68,6 +69,7 @@ def sign_up():
         username = request.form["username"]
         password = request.form["password"]
         email = request.form["email"]
+        profile_img = request.files["profile_img"]
 
         exist_email = User.query.filter_by(email=email).first()
         exist_username = User.query.filter_by(username=username).first()
@@ -80,7 +82,10 @@ def sign_up():
 
         hashed_pass = bcrypt.hashpw(password.encode("utf-8"), salt=bcrypt.gensalt())
 
-        new_user = User(username=username, password_hash=hashed_pass.decode("utf-8"), email=email)
+        upload_result = cloudinary.uploader.upload(profile_img, folder="profile_images", resource_type="image")
+
+        new_user = User(username=username, password_hash=hashed_pass.decode("utf-8"), email=email, profile_img=upload_result["url"])
+        print(new_user)
         db.session.add(new_user)
 
         if new_user:
@@ -90,6 +95,7 @@ def sign_up():
                 return redirect(url_for("login"))
             except Exception as e:
                 print(e)
+                flash(str(e))
                 raise InternalServerError(description="Something went wrong", response=redirect(url_for("home_page")))
         else:
             raise InternalServerError(description="Something went wrong", response=redirect(url_for("home_page")))
@@ -103,11 +109,14 @@ def create_post():
         title = request.form["title"]
         subtitle = request.form["subtitle"]
         text = request.form["text"]
+        blog_img = request.files["blog_img"]
 
         if "user_id" in session:
             user = User.query.get(session["user_id"])
 
-            new_blog = Blog(title=title, subtitle=subtitle, author_name=user.username, text=text, user_id=user.id)
+            upload_result = cloudinary.uploader.upload(blog_img, folder="blog_images", resource_type="image")
+
+            new_blog = Blog(title=title, subtitle=subtitle, author_name=user.username, text=text, user_id=user.id, blog_img=upload_result["url"])
         else:
             raise Unauthorized(response=redirect(url_for("login")))
 

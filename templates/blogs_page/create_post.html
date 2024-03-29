@@ -9,7 +9,20 @@ endblock %} {% block body %}
 <section class="section">
   <div class="container">
     <h1 class="title">Create New Post</h1>
-    <form action="/create-post" method="POST">
+    <form action="/create-post" method="POST" enctype="multipart/form-data">
+      <div class="field">
+        <label class="label" for="blog-img">Blog image</label>
+        <div class="control">
+          <input
+            class="input"
+            type="file"
+            id="blog-img"
+            name="blog_img"
+            placeholder="Upload a catchy image"
+            required
+          />
+        </div>
+      </div>
       <div class="field">
         <label class="label" for="title">Title</label>
         <div class="control">
