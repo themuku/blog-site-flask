@@ -97,3 +97,7 @@ footer {
 .section {
   color: black;
 }
+
+.custom-navbar {
+  background-color: transparent;
+}

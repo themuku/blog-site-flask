@@ -6,6 +6,7 @@ from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import MetaData
 import cloudinary
+# from helpers import inject_user
 
 load_dotenv()
 
@@ -23,6 +24,8 @@ db.init_app(app)
 CORS(app)
 
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
+
+# app.context_processor(inject_user)
 
 cloudinary.config(cloud_name = os.getenv('CLOUD_NAME'), api_key=os.getenv('API_KEY'),
     api_secret=os.getenv('API_SECRET'))

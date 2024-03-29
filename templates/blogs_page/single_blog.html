@@ -2,11 +2,21 @@
 %} {% block body %}
 <header class="section">
   <div class="container">
-    <h1 class="title">{{ blog.title }}</h1>
-    <h2 class="subtitle">{{ blog.subtitle }}</h2>
-    <p class="subtitle">
-      By {{ blog.author_name }} | Posted on {{ blog.created_at }}
-    </p>
+    <div class="columns">
+      <div class="column is-half">
+        <figure class="image is-16by9">
+          <img src="{{ blog.blog_img }}" alt="{{ blog.title }}" />
+        </figure>
+      </div>
+      <div class="column is-half">
+        <h1 class="title">{{ blog.title }}</h1>
+        <h2 class="subtitle">{{ blog.subtitle }}</h2>
+        <p class="subtitle">
+          By {{ blog.author_name }} | Posted on {{ blog.created_at.strftime('%B
+          %d %Y, %H:%M') }}
+        </p>
+      </div>
+    </div>
   </div>
 </header>
 

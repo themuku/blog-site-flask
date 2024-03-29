@@ -4,19 +4,25 @@ from config import db, app
 from models import Blog, User
 from werkzeug.exceptions import NotFound, Unauthorized, BadRequest, Conflict, InternalServerError
 import cloudinary.uploader
+from helpers import inject_user_data
 
 
 @app.route('/')
-def home_page():  # put application's code here
-    return render_template("home_page/index.html")
+@inject_user_data
+def home_page():
+    blogs = Blog.query.all()
+
+    return render_template("home_page/index.html", blogs=list(blogs)[:3])
 
 
 @app.route("/about")
+@inject_user_data
 def about_page():
     return render_template("about.html")
 
 
 @app.route("/blogs/<int:blog_id>")
+@inject_user_data
 def single_blog_page(blog_id):
     try:
         found_blog = Blog.query.get(blog_id)
@@ -30,6 +36,7 @@ def single_blog_page(blog_id):
 
 
 @app.route("/blogs")
+@inject_user_data
 def blogs_page():
     try:
         blogs = Blog.query.all()
@@ -40,6 +47,7 @@ def blogs_page():
 
 
 @app.route("/auth/login", methods=["GET", "POST"])
+@inject_user_data
 def login():
     if request.method == "POST":
         email = request.form["email"]
@@ -57,6 +65,7 @@ def login():
 
 
 @app.route("/auth/logout")
+@inject_user_data
 def logout():
     del session["user_id"]
 
@@ -64,6 +73,7 @@ def logout():
 
 
 @app.route("/auth/sign-up", methods=["GET", "POST"])
+@inject_user_data
 def sign_up():
     if request.method == "POST":
         username = request.form["username"]
@@ -104,6 +114,7 @@ def sign_up():
 
 
 @app.route("/create-post", methods=["POST", "GET"])
+@inject_user_data
 def create_post():
     if request.method == "POST":
         title = request.form["title"]
@@ -135,6 +146,7 @@ def create_post():
 
 
 @app.route("/not-found")
+@inject_user_data
 def not_found_page():
     return render_template("not_found_page/index.html")
 

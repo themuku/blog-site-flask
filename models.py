@@ -16,7 +16,7 @@ class User(db.Model):
     email = Column(String(255), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
     blogs = db.relationship("Blog", backref="author")
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now)
     role = Column(Enum(EnumRole.ADMIN, EnumRole.USER), default=EnumRole.USER)
     profile_img = Column(String(255), default="default.jpg")
 

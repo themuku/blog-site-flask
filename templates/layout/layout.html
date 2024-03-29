@@ -7,67 +7,89 @@
       content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
     />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+      <link rel="shortcut icon" href="{{ url_for("static", filename="assets/favicon.png") }}" type="image/x-icon">
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
     />
     <link
       rel="stylesheet"
-      href="{{ url_for('static', filename='css/style.css') }}"
+      href="https://cdn.jsdelivr.net/npm/bulma@latest/css/bulma.min.css"
     />
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@latest/css/bulma.min.css"
+      href="{{ url_for('static', filename='css/style.css') }}"
     />
     {% block css %} {% endblock %}
     <title>{% block title %}{% endblock %}</title>
   </head>
   <body>
-    <header class="header">
-      <nav class="header-navigation">
-        <ul>
-          <li>
-            <a class="button is-light is-link header-navigation__link" href="/"
+    <header class="header has-background-primary">
+      <nav class="navbar custom-navbar is-light">
+        <div class="container">
+          <div class="navbar-start">
+            <a class="navbar-item is-text has-text-link-dark button" href="/"
               >Home</a
             >
-          </li>
-          <li>
             <a
-              class="button is-light is-link header-navigation__link"
+              class="navbar-item is-text has-text-link-dark button"
               href="/about"
               >About</a
             >
-          </li>
-          <li>
             <a
-              class="button is-light is-link header-navigation__link"
+              class="navbar-item is-text has-text-link-dark button"
               href="/blogs"
               >Blogs</a
             >
-          </li>
-          {% if "user_id" in session %}
-          <li>
+            {% if "user_id" in session and g.user %}
             <a
-              class="button is-light is-link header-navigation__link"
+              class="navbar-item is-text has-text-link-dark button"
               href="/create-post"
-              >Create new Post</a
+              >Create Blog</a
             >
-          </li>
-          {% endif %}
-        </ul>
+            {% endif %}
+          </div>
+          <div class="navbar-end">
+            {% if "user_id" in session and g.user %}
+            <div class="navbar-item">
+              <figure class="image is-24x24" style="margin-right: 10px">
+                <img
+                  src="{{ g.user.profile_img }}"
+                  alt="Profile Picture"
+                  class="is-rounded"
+                />
+              </figure>
+              {{ g.user.username }}
+            </div>
+            <a
+              class="navbar-item button is-text has-text-danger"
+              href="/auth/logout"
+              >Logout</a
+            >
+            {% else %}
+            <div class="navbar-item">
+              <a class="button has-text-link-dark is-text" href="/auth/login"
+                >Login</a
+              >
+            </div>
+            <div class="navbar-item">
+              <a class="button is-light" href="/auth/sign-up">Sign up</a>
+            </div>
+            {% endif %}
+          </div>
+        </div>
       </nav>
-      {% if "user_id" not in session %}
-      <div class="buttons">
-        <a class="button is-light is-medium" href="/auth/login">Login</a>
-        <a class="button is-light is-medium" href="/auth/sign-up">Sign up</a>
-      </div>
-      {% else %}
-      <a class="button is-light is-medium" href="/auth/logout">Log out</a>
-      {% endif %}
     </header>
     {% block body %}{% endblock %}
-    <footer>
-      <p>&copy; Copyright 2024 by themuku</p>
+    <footer class="footer has-background-dark">
+      <div class="container has-text-centered">
+        <p>&copy; Copyright 2024 by themuku</p>
+      </div>
     </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    {% block js %} {% endblock %}
   </body>
 </html>
