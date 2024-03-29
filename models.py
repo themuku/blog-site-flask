@@ -1,6 +1,7 @@
 from config import db
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey, Enum
+from sqlalchemy.sql import func
 
 
 class EnumRole:
@@ -16,7 +17,7 @@ class User(db.Model):
     email = Column(String(255), nullable=False, unique=True)
     password_hash = Column(String(255), nullable=False)
     blogs = db.relationship("Blog", backref="author")
-    created_at = Column(DateTime, default=datetime.now)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
     role = Column(Enum(EnumRole.ADMIN, EnumRole.USER), default=EnumRole.USER)
     profile_img = Column(String(255), default="default.jpg")
 
