@@ -20,18 +20,16 @@
             method="POST"
             enctype="multipart/form-data"
           >
-            <div class="field">
-              <label class="label" for="profile-img">Profile image</label>
-              <div class="control">
-                <input
-                  class="input"
-                  type="file"
-                  id="profile-img"
-                  name="profile_img"
-                  placeholder="Add profile image"
-                  required
-                />
-              </div>
+            <div class="file is-large is-boxed">
+              <label class="file-label">
+                <input class="file-input" type="file" name="profile_img" />
+                <span class="file-cta">
+                  <span class="file-icon">
+                    <i class="fas fa-upload"></i>
+                  </span>
+                  <span class="file-label"> Upload profile image… </span>
+                </span>
+              </label>
             </div>
             <div class="field">
               <label class="label" for="username">Username</label>

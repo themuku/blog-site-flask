@@ -1,7 +1,7 @@
 from flask import request, redirect, session, render_template, url_for, flash
 import bcrypt
 from config import db, app
-from models import Blog, User
+from models import Blog, User, EnumRole
 from werkzeug.exceptions import NotFound, Unauthorized, BadRequest, Conflict, InternalServerError
 import cloudinary.uploader
 from helpers import inject_user_data
@@ -143,6 +143,90 @@ def create_post():
             raise InternalServerError(description="Something went wrong", response=redirect(url_for("home_page")))
     elif request.method == "GET":
         return render_template("blogs_page/create_post.html")
+
+
+
+@app.route("/admin/create", methods=["POST", "GET"])
+def admin_login_page():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        email = request.form["email"]
+        profile_img = request.files["profile_img"]
+
+        exist_email = User.query.filter_by(email=email).first()
+        exist_username = User.query.filter_by(username=username).first()
+
+        if exist_email:
+            raise Conflict(description="User with this email is already exists")
+
+        if exist_username:
+            return Conflict(description="User with this username is already exists")
+
+        hashed_pass = bcrypt.hashpw(password.encode("utf-8"), salt=bcrypt.gensalt())
+
+        upload_result = cloudinary.uploader.upload(profile_img, folder="profile_images", resource_type="image")
+
+        new_user = User(username=username, password_hash=hashed_pass.decode("utf-8"), email=email, profile_img=upload_result["url"], role=EnumRole.ADMIN)
+        print(new_user)
+        db.session.add(new_user)
+
+        if new_user:
+            try:
+                db.session.commit()
+                session["user_id"] = new_user.id
+                return redirect(url_for("login"))
+            except Exception as e:
+                print(e)
+                flash(str(e))
+                raise InternalServerError(description="Something went wrong", response=redirect(url_for("home_page")))
+        else:
+            raise InternalServerError(description="Something went wrong", response=redirect(url_for("home_page")))
+    elif request.method == "GET":
+        return render_template("auth_page/sign-up.html")
+
+
+@app.route("/user/<string:username>")
+@inject_user_data
+def user_page(username):
+    if "user_id" in session:
+        user = User.query.filter_by(username=username).first()
+        return render_template("user_page/index.html", user=user)
+    else:
+        return redirect(url_for("login"))
+
+
+@app.route("/user/<string:username>/settings", methods=["POST", "GET"])
+@inject_user_data
+def user_settings_page(username):
+    if "user_id" in session:
+        user = User.query.filter_by(username=username).first()
+        if request.method == "POST":
+            user.username = request.form["username"]
+            user.email = request.form["email"]
+            user.profile_img = request.files["profile_img"]
+            db.session.commit()
+            return redirect(url_for("user_page", username=user.username))
+        elif request.method == "GET":
+            return render_template("user_page/settings.html", user=user)
+
+
+@app.route("/user/<string:username>/friends", methods=["POST", "GET"])
+@inject_user_data
+def user_friends_page(username):
+    if "user_id" in session:
+        user = User.query.filter_by(username=username).first()
+    else:
+        return redirect(url_for("login"))
+
+    if request.method == "POST":
+        friend_username = request.form["friend_username"]
+        friend = User.query.filter_by(username=friend_username).first()
+        user.friends.append(friend)
+        db.session.commit()
+        return redirect(url_for("user_friends_page", username=user.username))
+    elif request.method == "GET":
+        return render_template("user_page/friends.html", user=user)
 
 
 @app.route("/not-found")

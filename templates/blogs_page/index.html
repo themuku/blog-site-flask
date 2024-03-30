@@ -23,6 +23,11 @@
           </a>
           <p>{{ blog.subtitle }}</p>
           <a href="/blogs/{{ blog.id }}" class="button is-small">Read More</a>
+          {% if g.user.role == "ADMIN" or g.user.id == blog.user_id %}
+          <a href="/blogs/{{ blog.id }}/delete" class="button is-small"
+            >Delete</a
+          >
+          {% endif %}
         </div>
       </div>
     </div>

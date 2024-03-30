@@ -17,12 +17,15 @@
         </p>
       </div>
     </div>
+    {% if g.user.role == "ADMIN" or g.user.id == blog.user_id %}
+    <a href="/blogs/{{ blog.id }}/delete" class="button is-small">Delete</a>
+    {% endif %}
   </div>
 </header>
 
 <section class="section">
   <div class="container content">
-    <p>{{ blog.text }}</p>
+    <p class="">{{ blog.text }}</p>
   </div>
 </section>
 

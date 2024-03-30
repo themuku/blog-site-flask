@@ -20,6 +20,7 @@ class User(db.Model):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     role = Column(Enum(EnumRole.ADMIN, EnumRole.USER), default=EnumRole.USER)
     profile_img = Column(String(255), default="default.jpg")
+    friends = db.relationship("User", secondary="friends", primaryjoin=id == "friends.c.user_id", secondaryjoin=id == "friends.c.friend_id")
 
     def __repr__(self):
         return "<User %r>" % self.id

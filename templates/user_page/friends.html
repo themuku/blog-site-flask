@@ -1,0 +1,50 @@
+{% extends "layout/layout.html" %} {% block title %}Settings{% endblock %} {%
+block body %}
+<section class="section">
+  <div class="container">
+    <h1 class="title">Friends</h1>
+    <div class="columns">
+      <div class="column is-one-third">
+        <h3 class="title is-3">Your Friends</h3>
+        <ul class="friend-list">
+          {% if user.friends|length > 0 %} {% for friend in user.friends %}
+          <li class="box">
+            <figure class="image is-48x48">
+              <img
+                src="{{ friend.profile_img }}"
+                alt="{{ friend.username }}'s Profile Picture"
+              />
+            </figure>
+            <div class="content">
+              <a href="/user/{{ friend.username }}">Friend Name</a>
+            </div>
+          </li>
+          {% endfor %} {% else %}
+          <p>You have no friends yet.</p>
+          {% endif %}
+        </ul>
+      </div>
+      <div class="column is-two-thirds">
+        <div class="field">
+          <label class="label" for="search-friend">Find Friends</label>
+          <div class="control has-icons-left">
+            <input
+              class="input"
+              type="text"
+              id="search-friend"
+              name="search-friend"
+              placeholder="Search by username"
+            />
+            <span class="icon is-small is-left">
+              <i class="fas fa-search"></i>
+            </span>
+          </div>
+        </div>
+        <div class="results">
+          <p>No results found yet.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}
