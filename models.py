@@ -9,6 +9,26 @@ class EnumRole:
     USER = "user"
 
 
+class Friend(db.Model):
+    __tablename__ = "friends"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    friend_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return "<Friend %r>" % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "friend_id": self.friend_id,
+            "created_at": self.created_at
+        }
+
+
 class User(db.Model):
     __tablename__ = "users"
 
@@ -20,10 +40,24 @@ class User(db.Model):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     role = Column(Enum(EnumRole.ADMIN, EnumRole.USER), default=EnumRole.USER)
     profile_img = Column(String(255), default="default.jpg")
-    friends = db.relationship("User", secondary="friends", primaryjoin=id == "friends.c.user_id", secondaryjoin=id == "friends.c.friend_id")
+    friends = db.relationship("Friend", backref="user", foreign_keys=[Friend.user_id])
+    bio = Column(Text, nullable=True)
 
     def __repr__(self):
         return "<User %r>" % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "profile_img": self.profile_img,
+            "role": self.role,
+            "created_at": self.created_at,
+            "bio": self.bio,
+            "friends": self.friends,
+            "blogs": self.blogs
+        }
 
 
 class Blog(db.Model):
@@ -40,3 +74,15 @@ class Blog(db.Model):
 
     def __repr__(self):
         return "<BlogPost %r>" % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "author_name": self.author_name,
+            "subtitle": self.subtitle,
+            "text": self.text,
+            "created_at": self.created_at,
+            "blog_img": self.blog_img,
+            "user_id": self.user_id
+        }

@@ -7,7 +7,7 @@ block body %}
       <div class="column is-one-third">
         <h3 class="title is-3">Your Friends</h3>
         <ul class="friend-list">
-          {% if user.friends|length > 0 %} {% for friend in user.friends %}
+          {% if friends|length > 0 %} {% for friend in friends %}
           <li class="box">
             <figure class="image is-48x48">
               <img
@@ -16,7 +16,7 @@ block body %}
               />
             </figure>
             <div class="content">
-              <a href="/user/{{ friend.username }}">Friend Name</a>
+              <a href="/user/{{ friend.username }}">{{ friend.username }}</a>
             </div>
           </li>
           {% endfor %} {% else %}
@@ -40,11 +40,13 @@ block body %}
             </span>
           </div>
         </div>
-        <div class="results">
+        <div id="results" class="results">
           <p>No results found yet.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
+{% endblock %} {% block js %}
+<script src="{{ url_for("static", filename="./js/friend.js") }}"></script>
 {% endblock %}

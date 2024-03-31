@@ -1,7 +1,7 @@
-from flask import request, redirect, session, render_template, url_for, flash
+from flask import request, redirect, session, render_template, url_for, flash, make_response, jsonify
 import bcrypt
 from config import db, app
-from models import Blog, User, EnumRole
+from models import Blog, User, Friend, EnumRole
 from werkzeug.exceptions import NotFound, Unauthorized, BadRequest, Conflict, InternalServerError
 import cloudinary.uploader
 from helpers import inject_user_data
@@ -205,6 +205,7 @@ def user_settings_page(username):
             user.username = request.form["username"]
             user.email = request.form["email"]
             user.profile_img = request.files["profile_img"]
+            user.bio = request.form["bio"]
             db.session.commit()
             return redirect(url_for("user_page", username=user.username))
         elif request.method == "GET":
@@ -215,24 +216,75 @@ def user_settings_page(username):
 @inject_user_data
 def user_friends_page(username):
     if "user_id" in session:
-        user = User.query.filter_by(username=username).first()
+        user = User.query.get(session["user_id"])
+        friend = User.query.filter_by(username=username).first()
     else:
         return redirect(url_for("login"))
 
     if request.method == "POST":
-        friend_username = request.form["friend_username"]
-        friend = User.query.filter_by(username=friend_username).first()
-        user.friends.append(friend)
-        db.session.commit()
+        friends = Friend.query.filter_by(user_id=user.id, friend_id=friend.id).all()
+
+        if friends:
+            return InternalServerError(description="Friendship already exists", response=redirect(url_for("user_friends_page", username=user.username)))
+        else:
+            new_friend = Friend(user_id=user.id, friend_id=friend.id)
+
+        try:
+            db.session.add(new_friend)
+            db.session.commit()
+        except Exception as e:
+            print(str(e))
+            return InternalServerError(description="Something went wrong", response=redirect(url_for("user_friends_page", username=user.username)))
         return redirect(url_for("user_friends_page", username=user.username))
     elif request.method == "GET":
-        return render_template("user_page/friends.html", user=user)
+        friends = Friend.query.filter_by(user_id=user.id).all()
+        users = [User.query.get(friend.friend_id) for friend in friends]
+        friends_list = [user.serialize() for user in users]
+        return render_template("user_page/friends.html", user=user, friends=friends_list)
+
+
+@app.route("/search/user/<string:username>", methods=["GET"])
+def search_page(username):
+    if request.method == "GET":
+        found_users = User.query.filter_by(username=username).first()  # Fetch the user, if any
+
+        if found_users:
+            return make_response(jsonify(found_users.serialize()), 200, {"Content-Type": "application/json"})
+        else:
+            return make_response(jsonify({"message": "User not found."}), 404)  # Handle not found case
+    else:
+        return redirect(url_for("home_page"))
 
 
 @app.route("/not-found")
 @inject_user_data
 def not_found_page():
     return render_template("not_found_page/index.html")
+
+
+@app.errorhandler(NotFound)
+def page_not_found(e):
+    return redirect(url_for("not_found_page"))
+
+
+@app.errorhandler(Unauthorized)
+def unauthorized(e):
+    return redirect(url_for("login"))
+
+
+@app.errorhandler(BadRequest)
+def bad_request(e):
+    return redirect(url_for("sign_up"))
+
+
+@app.errorhandler(Conflict)
+def conflict(e):
+    return redirect(url_for("sign_up"))
+
+
+@app.errorhandler(InternalServerError)
+def internal_server_error(e):
+    return redirect(url_for("home_page"))
 
 
 if __name__ == '__main__':
