@@ -11,5 +11,6 @@
       "dest": "./app.py"
     }
   ],
-  "version": 2
+  "version": 2,
+  "name": "blog-flask"
 }
