@@ -2,11 +2,29 @@ from config import db
 from datetime import datetime
 from sqlalchemy import Column, String, Integer, Text, DateTime, ForeignKey, Enum
 from sqlalchemy.sql import func
+from enums import EnumRole, EnumNotificationCategory, EnumStatus
 
 
-class EnumRole:
-    ADMIN = "admin"
-    USER = "user"
+class Notification(db.Model):
+    __tablename__ = "notifications"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    message = Column(String(255), nullable=False)
+    category = Column(Enum(EnumNotificationCategory), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    def __repr__(self):
+        return "<Notification %r>" % self.id
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "message": self.message,
+            "created_at": self.created_at,
+            "category": self.category,
+        }
 
 
 class Friend(db.Model):
@@ -15,6 +33,7 @@ class Friend(db.Model):
     id = Column(Integer, primary_key=True, autoincrement=True)
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     friend_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    status = Column(Enum(EnumStatus), default=EnumStatus.PENDING)
     created_at = Column(DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -25,7 +44,8 @@ class Friend(db.Model):
             "id": self.id,
             "user_id": self.user_id,
             "friend_id": self.friend_id,
-            "created_at": self.created_at
+            "created_at": self.created_at,
+            "status": self.status,
         }
 
 
@@ -38,7 +58,7 @@ class User(db.Model):
     password_hash = Column(String(255), nullable=False)
     blogs = db.relationship("Blog", backref="author")
     created_at = Column(DateTime(timezone=True), server_default=func.now())
-    role = Column(Enum(EnumRole.ADMIN, EnumRole.USER), default=EnumRole.USER)
+    role = Column(Enum(EnumRole), default=EnumRole.USER)
     profile_img = Column(String(255), default="default.jpg")
     friends = db.relationship("Friend", backref="user", foreign_keys=[Friend.user_id])
     bio = Column(Text, nullable=True)
